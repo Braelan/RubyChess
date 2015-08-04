@@ -7,22 +7,14 @@ class Piece
   ORTHAGONAL_DELTAS = [[0, 1], [1, 0], [0, -1], [-1, 0]]
   DIAGONAL_DELTAS = [[1,1], [1,-1], [-1,-1], [-1, 1]]
   KNIGHT_DELTAS = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]]
+  PAWN_DELTAS = [[1, -1], [1, 0], [2,0], [1,1]]
 
   def initialize(position, board, color)
     @pos, @board, @color = position, board, color
   end
 
-  #
-  # def move(piece.deltas)
-  #   sigma_deltas()
-  # end
-
-
   def moves
-
-    #
-    all_moves = sigma_deltas().map {|delta| transform(delta)}
-    # all_moves.select { |move| board.on_board?(move)}
+    sigma_deltas().map {|delta| transform(delta)}
   end
 
   def sigma_deltas
@@ -41,7 +33,6 @@ end
 
 class SlidingPiece < Piece
 
-
   def look(delta_new, delta1 = nil)
     new_pos = transform(delta_new)
     delta1 ||= delta_new
@@ -56,29 +47,11 @@ class SlidingPiece < Piece
 
     # => Array of moves in delta's direction
   end
-  #
-  # def look(delta, position)
-  #   return [] unless board.on_board?(position)
-  #   if !board[*position].nil?
-  #     return board[*position].color != self.color ? [position] : []
-  #   end
-  #   next_position = delta[0] + position[0], delta[1] + position[1]
-  #   next_space = look(delta, next_position)
-  #
-  #   next_space << position
-  #
-  #   # => Array of moves in delta's direction
-  # end
-
-  def method_name
-
-  end
 
   def sigma_deltas()
     total_moves = []
     (self.deltas).each do |delta|
         total_moves += look(delta)
-
       end
       total_moves
   end
@@ -89,12 +62,11 @@ class Queen < SlidingPiece
   def deltas
    ORTHAGONAL_DELTAS + DIAGONAL_DELTAS
   end
-
-
 end
 
 
 class Rook < SlidingPiece
+
   def deltas
     ORTHAGONAL_DELTAS
   end
@@ -107,14 +79,10 @@ class Bishop < SlidingPiece
   end
 end
 
-
-
-
 class SteppingPiece < Piece
 
   def moves
-      all_moves = super
-      all_moves.select {|move| board.on_board?(move) && (board[*move].nil? || enemy?(move))}
+    super.select {|move| board.on_board?(move) && (board[*move].nil? || enemy?(move))}
   end
 
   def sigma_deltas
@@ -140,13 +108,12 @@ end
 
 class Pawn < SteppingPiece
 
-  PAWN_DELTAS = [[1, -1], [1, 0], [2,0], [1,1]]
-
   def initialize(pos, board, color, orientation)
     super(pos, board, color)
     @deltas = PAWN_DELTAS
     @orientation = orientation
   end
+
   def deltas
     PAWN_DELTAS
   end
@@ -160,20 +127,13 @@ class Pawn < SteppingPiece
     debugger
     all_moves = super
     moves = all_moves.select{|position| pawn_move?(position)}
-
   end
 
   def pawn_move?(position)
-
     dx,dy = position[0] - pos[0], position[1] - pos[1]
     return false if dx**2 == 4 && !(pos[0] == 1|| pos[0] == 6)
-
     return false if dx*dy**2 == 1 && !enemy?(position)
-
     return false if (dx + dy) == 1 && enemy?(position)
-
-
     true
   end
-
 end
