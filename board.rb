@@ -43,21 +43,29 @@ def set_pieces(row, color)
 end
 
 def render
-  puts "_"*33
-  grid.each do |row|
-    row.each do |cell|
+  grid.each_with_index do |row, row_idx|
+    row_strs = Array.new(3) {""}
+    row.each_with_index do |cell, col_idx|
       symbol = render_piece(cell)
-      print "| #{symbol} "
+      odd = (row_idx + col_idx).odd?
+      sym_str = "  #{symbol}  "
+      row_strs[0] += odd ? "     ".colorize(:background => :light_white) : "     "
+      row_strs[1] += odd ? sym_str.colorize(:background => :light_white) : sym_str
+      row_strs[2] += odd ? "     ".colorize(:background => :light_white) : "     "
     end
-    print "|\n"
-    puts "_"*33
+    puts row_strs.join("\n")
   end
+  nil
 end
 
   def render_piece(cell)
       symbol = SYMBOLS[cell.class]
       return symbol.colorize(cell.color) unless cell.nil?
       symbol
+  end
+
+  def inspect
+    "ChessBoard"
   end
 
 
