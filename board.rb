@@ -1,6 +1,7 @@
-require_relative 'piece'
- require_relative 'grid'
-
+# require_relative 'piece'
+# require_relative 'grid'
+load './piece.rb'
+load './grid.rb'
 
 class ChessBoard
    include GRID
@@ -9,7 +10,8 @@ class ChessBoard
 
 def initialize
   # @grid = Grid.new(BOARD_SIZE,BOARD_SIZE)
-   @grid = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) { nil} }
+  #  @grid = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) { nil} }
+  new_grid(BOARD_SIZE)
 end
 
 def on_board?(pos)
