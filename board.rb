@@ -1,7 +1,7 @@
 # require_relative 'piece'
 # require_relative 'grid'
-load './piece.rb'
-load './grid.rb'
+require_relative 'chess_pieces'
+require_relative 'grid'
 
 class ChessBoard
    include GRID
