@@ -56,7 +56,7 @@ module GRID
   end
 
   def dup_grid
-    grid.dup.map(&:dup)
+    grid.dup.map { |row| row.dup.map(&:dup)}
   end
 
   def cells_inject(accum = nil, &prc)
