@@ -8,6 +8,8 @@ require 'colorize'
 class ChessBoard
    include GRID
 
+   attr_reader :captured_pieces
+
   BOARD_SIZE = 8
   PIECES = [Rook,Knight, Bishop, King, Queen, Bishop, Knight, Rook]
   SYMBOLS = {Rook => 'R', Knight => 'H', Bishop => 'B',
@@ -27,6 +29,7 @@ def set_board
   set_pawns(6, :red)
   set_pieces(0, :blue)
   set_pieces(7, :red)
+  @captured_pieces = []
 end
 
 def set_pawns(row, color)
@@ -74,5 +77,14 @@ end
     "ChessBoard"
   end
 
-
+def move(start_pos, end_pos)
+  piece = self[*start_pos]
+  raise "No piece at #{start_pos}" if piece.nil?   #input is in [row, col] form
+  raise "illegal move" unless piece.moves.include?(end_pos)
+  captured_pieces << self[*end_pos] if piece.enemy?(end_pos)
+  self[*end_pos] = piece
+  piece.pos = end_pos
+  self[*start_pos] = nil
 end
+
+  end
