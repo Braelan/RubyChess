@@ -48,8 +48,19 @@ def set_pieces(row, color)
 end
 
 def render
+  row_strs = Array.new(3) {""}
+      (BOARD_SIZE + 1).times do |col_i|
+        col_num = col_i - 1 < 0 ? " " : col_i
+        row_strs[0] += format_str(" ", false)
+        row_strs[1] += format_str(col_num, false)
+        row_strs[2] += format_str(" ", false)
+      end
+  puts row_strs.join("\n")
   grid.each_with_index do |row, row_idx|
     row_strs = Array.new(3) {""}
+    row_strs[0] += format_str(" ", true)
+    row_strs[1] += format_str(index_to_letter(row_idx), true)
+    row_strs[2] += format_str(" ", true)
     row.each_with_index do |cell, col_idx|
       symbol = render_piece(cell)
       odd = (row_idx + col_idx).odd?
@@ -60,6 +71,7 @@ def render
     end
     puts row_strs.join("\n")
   end
+  puts
   nil
 end
 
@@ -124,6 +136,10 @@ def undo
   self[*captured_piece[0]] = captured_piece[1]
   self[*active_piece[0]].pos = active_piece[0]
 
+end
+
+def sym(pos)
+  SYMBOLS[self[*pos].class]
 end
 
   end

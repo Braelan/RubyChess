@@ -78,6 +78,14 @@ module GRID
     @grid = Array.new(num_rows) { Array.new(num_columns) { def_cell } }
   end
 
+  def index_to_letter(idx)
+    ("a".ord + idx).chr
+  end
+
+  def letter_to_index(char)
+    char.downcase.ord - "a".ord
+  end
+
   private
 
   attr_reader :grid

@@ -16,14 +16,21 @@ class ChessGame
           system("clear")
           @board.render
           begin
-          input = @players.first.take_turn
+          begin
+          input = @players.first.take_turn.map { |move| [@board.letter_to_index(move[0]), move[1]] }
+          raise "#{input} is not a valid move" unless input.all?{ |pos| @board.on_board?(pos) }
+          rescue RuntimeError => e
+            puts e.message
+            retry
+        end
           raise "Not your piece" unless @board[*input[0]].color == @players.first.color
-        rescue
+        rescue RuntimeError => e
+          puts e.message
           retry
         end
           @board.move(*input)
         rescue RuntimeError => e
-          puts e.message          
+          puts e.message
           sleep(2)
           retry
         end
