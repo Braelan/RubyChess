@@ -12,6 +12,7 @@ class ChessBoard
   PIECES = [Rook,Knight, Bishop, King, Queen, Bishop, Knight, Rook]
   SYMBOLS = {Rook => 'R', Knight => 'H', Bishop => 'B',
     King => 'K', Queen => 'Q', Pawn => 'P', NilClass => ' '}
+  BOARD_COLORS = [:light_white, :default]
 
 def initialize
   new_grid(BOARD_SIZE)
@@ -48,10 +49,10 @@ def render
     row.each_with_index do |cell, col_idx|
       symbol = render_piece(cell)
       odd = (row_idx + col_idx).odd?
-      sym_str = "  #{symbol}  "
-      row_strs[0] += odd ? "     ".colorize(:background => :light_white) : "     "
-      row_strs[1] += odd ? sym_str.colorize(:background => :light_white) : sym_str
-      row_strs[2] += odd ? "     ".colorize(:background => :light_white) : "     "
+      sym_str = "#{symbol}"
+      row_strs[0] += format_str(" ", odd)
+      row_strs[1] += format_str(sym_str, odd)
+      row_strs[2] += format_str(" ", odd)
     end
     puts row_strs.join("\n")
   end
@@ -62,6 +63,11 @@ end
       symbol = SYMBOLS[cell.class]
       return symbol.colorize(cell.color) unless cell.nil?
       symbol
+  end
+
+  def format_str(str, alt)
+    color = alt ? 0 : 1
+    "  #{str}  ".colorize(:background => BOARD_COLORS[color])
   end
 
   def inspect
