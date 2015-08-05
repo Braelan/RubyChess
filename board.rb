@@ -12,8 +12,8 @@ class ChessBoard
 
   BOARD_SIZE = 8
   PIECES = [Rook,Knight, Bishop, King, Queen, Bishop, Knight, Rook]
-  SYMBOLS = {Rook => "R", Knight => 'H', Bishop => 'B',
-    King => 'K', Queen => 'Q', Pawn => 'P', NilClass => ' '}
+  SYMBOLS = {Rook => "\u265c", Knight => "\u265e", Bishop => "\u265d",
+    King => "\u265a", Queen => "\u265b", Pawn => "\u265f", NilClass => ' '}
   BOARD_COLORS = [:light_white, :default]
 
 def initialize
@@ -29,7 +29,8 @@ def set_board
   set_pawns(6, :red)
   set_pieces(0, :blue)
   set_pieces(7, :red)
-  @history = []
+  init_history
+  self
 end
 
 def set_pawns(row, color)
