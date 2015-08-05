@@ -53,9 +53,13 @@ class Piece
   end
 
   def put_in_check?(move)
-    board.move(self.pos, move)
+    board.move!(self.pos, move)
     check = board.in_check?(self.color)
     board.undo
     check
+  end
+
+  def valid_moves?
+    self.moves.any? { |move| !self.put_in_check?(move)}
   end
 end

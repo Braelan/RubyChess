@@ -7,7 +7,6 @@ class SlidingPiece < Piece
     delta1 ||= delta_new
     return [] if stop_at?(delta_new, delta1)
     next_delta = [delta1[0] + delta_new[0], delta1[1] + delta_new[1]]
-    # return [new_pos] if enemy?(new_pos)
     next_space = look(next_delta,delta1)
     output = next_space
     output << delta_new

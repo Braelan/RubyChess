@@ -77,7 +77,7 @@ end
     "ChessBoard"
   end
 
-def move(start_pos, end_pos)
+def move!(start_pos, end_pos)
   piece = self[*start_pos]
   raise "No piece at #{start_pos}" if piece.nil?   #input is in [row, col] form
   raise "illegal move" unless piece.moves.include?(end_pos)
@@ -87,14 +87,22 @@ def move(start_pos, end_pos)
   self[*start_pos] = nil
 end
 
-def final_move(start_pos, end_pos)
+def move(start_pos, end_pos)
   raise "This move puts you in check" if self[*start_pos].put_in_check?(end_pos)
-  move(start_pos, end_pos)
+  move!(start_pos, end_pos)
 end
 
 def in_check?(color)
   king_pos = get_kings_position(color)
   cells_any? { |piece| !piece.nil? && piece.moves.include?(king_pos)}
+end
+
+def checkmate?(color)
+    in_check?(color) && !cells_any?{|cell| !cell.nil? && (cell.color == color && cell.valid_moves?)}
+end
+
+def init_history
+  @history = []
 end
 
 def get_kings_position(color)
