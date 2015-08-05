@@ -51,4 +51,11 @@ class Piece
       board.on_board?(move) && can_move_to?(move)
     end
   end
+
+  def put_in_check?(move)
+    board.move(self.pos, move)
+    check = board.in_check?(self.color)
+    board.undo
+    check
+  end
 end
