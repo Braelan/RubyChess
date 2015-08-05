@@ -12,7 +12,7 @@ class ChessBoard
 
   BOARD_SIZE = 8
   PIECES = [Rook,Knight, Bishop, King, Queen, Bishop, Knight, Rook]
-  SYMBOLS = {Rook => 'R', Knight => 'H', Bishop => 'B',
+  SYMBOLS = {Rook => "R", Knight => 'H', Bishop => 'B',
     King => 'K', Queen => 'Q', Pawn => 'P', NilClass => ' '}
   BOARD_COLORS = [:light_white, :default]
 
@@ -87,6 +87,11 @@ def move(start_pos, end_pos)
   self[*start_pos] = nil
 end
 
+def final_move(start_pos, end_pos)
+  raise "This move puts you in check" if self[*start_pos].put_in_check?(end_pos)
+  move(start_pos, end_pos)
+end
+
 def in_check?(color)
   king_pos = get_kings_position(color)
   cells_any? { |piece| !piece.nil? && piece.moves.include?(king_pos)}
@@ -102,5 +107,14 @@ def take_history(start_pos, end_pos)  #positions come in [row,col]
   history << [[start_pos, self[*start_pos]], [end_pos, self[*end_pos]]]
 end
 
+def undo
+  moves = history.pop
+  captured_piece = moves.pop
+  active_piece = moves.pop
+  self[*active_piece[0]] = active_piece[1]
+  self[*captured_piece[0]] = captured_piece[1]
+  self[*active_piece[0]].pos = active_piece[0]
+
+end
 
   end
