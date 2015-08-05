@@ -87,4 +87,15 @@ def move(start_pos, end_pos)
   self[*start_pos] = nil
 end
 
+def in_check?(color)
+  king_pos = get_kings_position(color)
+  cells_any? { |piece| !piece.nil? && piece.moves.include?(king_pos)}
+end
+
+def get_kings_position(color)
+  king  = cells_select{|cell| cell.is_a?(King) && cell.color == color}[0]
+  raise "No #{color} King in the game"  if king.nil?
+  king.pos
+end
+
   end
