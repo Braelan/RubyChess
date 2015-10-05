@@ -1,3 +1,5 @@
+
+
 # require_relative 'piece'
 # require_relative 'grid'
 require_relative 'chess_pieces'
@@ -58,9 +60,9 @@ def render
   puts row_strs.join("\n")
   grid.each_with_index do |row, row_idx|
     row_strs = Array.new(3) {""}
-    row_strs[0] += format_str(" ", true)
-    row_strs[1] += format_str(index_to_letter(row_idx), true)
-    row_strs[2] += format_str(" ", true)
+    row_strs[0] += format_str(" ", false)
+    row_strs[1] += format_str(index_to_letter(row_idx), false)
+    row_strs[2] += format_str(" ", false)
     row.each_with_index do |cell, col_idx|
       symbol = render_piece(cell)
       odd = (row_idx + col_idx).odd?
