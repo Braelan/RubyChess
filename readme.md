@@ -19,7 +19,7 @@ Blue moves first.
   * grid.rb contains the logic to access grid squares
 
 ### Sample code
-'''ruby
+```ruby
 def enemy?(pos)
   return false if empty?(pos)
   board[*pos].color != self.color
@@ -33,4 +33,4 @@ def can_move_to?(pos)
   empty?(pos) || enemy?(pos)
 end
 
-'''
+```
